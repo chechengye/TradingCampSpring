@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <!--配置注解扫描,决定哪个包下面可以使用注解，注解才会生效-->
+    <context:component-scan base-package="com.weichuang.annotation"/>
+
+    <!--管理对象 目前必须使用全路径的自定义类 默认名称为类首字母小写
+    name: 名称任意，可以重复,可以使用特殊字符。通常情况下，项目中的对象唯一的。不建议使用多名称的方式进行配置
+    class：要配置的对象的全路径
+    id : 也是起个别名，名称任意，不可以重复。它的特殊字符必须满足xml配置要求
+    容器中无论是id还是name配置的多个bean之间是不可以重复命名的。建议使用name的方式
+    scope : 域，默认为单例。struts2中会将prototype 。使用默认的方式
+-->
+    <bean name="user"  class="com.weichuang.pojo.User" >
+        <!--value值类型注入，8种基本数据类型  ref：配置引用数据类型，对象 下面的方式叫：set方式注入DI-->
+        <property name="name" value="lisi"></property>
+        <property name="age" value="18"></property>
+        <property name="car" ref="car"></property>
+    </bean>
+    <bean id="user1" class="com.weichuang.pojo.User">
+        <constructor-arg name="name" value="wangwu" ></constructor-arg>
+        <constructor-arg name="age" value="22"></constructor-arg>
+        <constructor-arg name="car" ref="car"></constructor-arg>
+    </bean>
+    <!--SpEL 表达式的方式 #{}-->
+    <bean id="user2" class="com.weichuang.pojo.User">
+        <property name="name" value="#{user.name}"></property>
+        <property name="age" value="#{user.age}"></property>
+        <property name="car" ref="car"></property>
+    </bean>
+
+
+    <bean name="car" class="com.weichuang.pojo.Car">
+        <property name="name" value="法拉利"></property>
+        <property name="color" value="红色"></property>
+    </bean>
+
+</beans>
